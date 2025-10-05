@@ -12,10 +12,8 @@ import dev.nextftc.hardware.powerable.SetPower;
 
 public class Flywheel implements Subsystem {
     public static final Flywheel INSTANCE = new Flywheel();
-
-    private boolean powered = true;
     private Flywheel() { }
-
+    private boolean powered = true;
     private final ControlSystem flywheelControlSystem = ControlSystem.builder()
             .velPid(1)
             .build();

@@ -17,19 +17,16 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.DifferentialArcadeDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@TeleOp(name = "Main OpMode")
-public class MainOpMode extends NextFTCOpMode {
-    public MainOpMode() {
+@TeleOp(name = "ArmTest")
+public class ArmTest extends NextFTCOpMode {
+    public ArmTest() {
         addComponents(
-                new SubsystemComponent(Flywheel.INSTANCE, Pusher.INSTANCE, Intake.INSTANCE, Arms.INSTANCE, Climber.INSTANCE),
+                new SubsystemComponent(Intake.INSTANCE, Arms.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
         );
     }
 
-    private final MotorEx leftDriveMotor = new MotorEx("front_left").reversed();
-    private final MotorEx rightDriveMotor = new MotorEx("front_right");
-    public Command driverControlled;
 
     @Override
     public void onInit() {
@@ -38,24 +35,6 @@ public class MainOpMode extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        driverControlled = new DifferentialArcadeDriverControlled(leftDriveMotor, rightDriveMotor, Gamepads.gamepad1().leftStickY().negate(), Gamepads.gamepad1().rightStickX());
-        driverControlled.schedule();
-
-        Flywheel.INSTANCE.spinUp.schedule();
-        Climber.INSTANCE.holdPositon.schedule();
-
-        Gamepads.gamepad1().leftBumper()
-                .whenBecomesTrue(Climber.INSTANCE.climbUp)
-                .whenBecomesTrue(Flywheel.INSTANCE.cutPower);
-
-        Gamepads.gamepad1().cross()
-                .whenBecomesTrue(Pusher.INSTANCE.pushUpBalls)
-                .whenBecomesFalse(Pusher.INSTANCE.holdBalls);
-
-        Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Intake.INSTANCE.intake)
-                .whenBecomesFalse(Intake.INSTANCE.stopIntake);
-
         Gamepads.gamepad2().cross()
                 .whenBecomesTrue(Arms.INSTANCE.squeezeArm);
 
@@ -63,7 +42,9 @@ public class MainOpMode extends NextFTCOpMode {
                 .whenBecomesTrue(Arms.INSTANCE.openArm);
 
         Gamepads.gamepad2().circle()
-                .whenBecomesTrue(Arms.INSTANCE.holdArm);
+                .whenBecomesTrue(Arms.INSTANCE.holdArm)
+                .whenBecomesTrue(Intake.INSTANCE.intake)
+                .whenBecomesFalse(Intake.INSTANCE.stopIntake);
 
 
 
