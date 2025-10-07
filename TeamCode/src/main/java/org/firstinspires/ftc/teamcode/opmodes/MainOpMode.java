@@ -53,7 +53,7 @@ public class MainOpMode extends NextFTCOpMode {
                 .whenBecomesTrue(Pusher.INSTANCE.pushUpBalls)
                 .whenBecomesFalse(Pusher.INSTANCE.holdBalls);
 
-        Gamepads.gamepad2().dpadUp()
+        Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Intake.INSTANCE.intake)
                 .whenBecomesFalse(Intake.INSTANCE.stopIntake);
 
