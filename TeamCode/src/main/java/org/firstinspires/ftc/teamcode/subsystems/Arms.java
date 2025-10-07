@@ -14,21 +14,24 @@ public class Arms implements Subsystem {
             .brakeMode();
 
     private final MotorEx rightArm = new MotorEx("rightArm")
-            .brakeMode();
+            .brakeMode()
+            .reversed();
 
     private final ControlSystem armControlSystem = ControlSystem.builder()
-            .posPid(0, 0, 0)
+            .posPid(0.01, 0, 0)
             .build();
 
     public Command foldAway = new RunToPosition(armControlSystem, 0).requires(this);
-    public Command openArm = new RunToPosition(armControlSystem, 100).requires(this);
-    public Command holdArm = new RunToPosition(armControlSystem, 200).requires(this);
-    public Command squeezeArm = new RunToPosition(armControlSystem, 300).requires(this);
+    public Command openArm = new RunToPosition(armControlSystem, 200).requires(this);
+    public Command holdArm = new RunToPosition(armControlSystem, 300).requires(this);
+    public Command squeezeArm = new RunToPosition(armControlSystem, 400).requires(this);
 
     @Override
     public void initialize() {
-        leftArm.setCurrentPosition(0);
-        rightArm.setCurrentPosition(0);
+        //400 for arms folded across intake
+        //0 for folded back
+        leftArm.setCurrentPosition(400);
+        rightArm.setCurrentPosition(400);
     }
 
     @Override
