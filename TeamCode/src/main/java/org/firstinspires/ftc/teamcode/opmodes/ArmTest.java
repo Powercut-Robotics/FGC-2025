@@ -30,7 +30,7 @@ public class ArmTest extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        Arms.INSTANCE.squeezeArm.schedule();
+
     }
 
     @Override

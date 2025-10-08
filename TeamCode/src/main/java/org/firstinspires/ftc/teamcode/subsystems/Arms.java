@@ -40,20 +40,20 @@ public class Arms implements Subsystem {
 
     public Command foldBack = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 0).requires(this)
-    );
+            new RunToPosition(armControlSystem, 0)
+    ).requires(this);
     public Command openArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 500).requires(this)
-    );
+            new RunToPosition(armControlSystem, 500)
+    ).requires(this);
     public Command holdArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 650).requires(this)
-    );
+            new RunToPosition(armControlSystem, 650)
+    ).requires(this);
     public Command squeezeArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 1000).requires(this)
-    );
+            new RunToPosition(armControlSystem, 1000)
+    ).requires(this);
 
 
 

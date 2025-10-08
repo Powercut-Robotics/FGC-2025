@@ -17,9 +17,9 @@ public class Climber implements Subsystem {
             .brakeMode();
 
 
-    public Command holdPosition = new InstantCommand(() -> power = 0);
-    public Command climbUp = new InstantCommand(() -> power = 1);
-    public Command holdHang = new InstantCommand(() -> power = 0.2);
+    public Command holdPosition = new InstantCommand(() -> power = 0).requires(this);
+    public Command climbUp = new InstantCommand(() -> power = 1).requires(this);
+    public Command holdHang = new InstantCommand(() -> power = 0.2).requires(this);
 
     @Override
     public void initialize() {

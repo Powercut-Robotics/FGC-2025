@@ -28,9 +28,9 @@ public class Flywheel implements Subsystem {
 
     public Command spinUp = new ParallelGroup(
             new InstantCommand(() -> powered = true),
-            new RunToVelocity(flywheelControlSystem, 2200).requires(flywheelMotor)
-    );
-    public Command cutPower = new InstantCommand(() -> powered = false);
+            new RunToVelocity(flywheelControlSystem, 2200)
+    ).requires(this);
+    public Command cutPower = new InstantCommand(() -> powered = false).requires(this);
 
 
     @Override
