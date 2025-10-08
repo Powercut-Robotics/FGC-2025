@@ -30,7 +30,7 @@ public class ArmTest extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        Arms.INSTANCE.foldAway.schedule();
+        Arms.INSTANCE.squeezeArm.schedule();
     }
 
     @Override
@@ -45,10 +45,8 @@ public class ArmTest extends NextFTCOpMode {
                 .whenBecomesTrue(Arms.INSTANCE.holdArm)
                 .whenBecomesTrue(Intake.INSTANCE.intake)
                 .whenBecomesFalse(Intake.INSTANCE.stopIntake);
-
-
-
     }
+
 
 
 }

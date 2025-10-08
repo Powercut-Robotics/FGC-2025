@@ -14,7 +14,8 @@ public class Pusher implements Subsystem {
     private double power = 0;
 
     private final MotorEx pusherMotor = new MotorEx("pusherMotor")
-            .brakeMode();
+            .brakeMode()
+            .reversed();
 
 
     public Command pushDownBalls = new InstantCommand(() -> power = -1).requires(this);

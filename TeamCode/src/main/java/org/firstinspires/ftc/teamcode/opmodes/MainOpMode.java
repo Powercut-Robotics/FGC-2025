@@ -33,12 +33,12 @@ public class MainOpMode extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        Arms.INSTANCE.foldAway.schedule();
+        Flywheel.INSTANCE.cutPower.schedule();
     }
 
     @Override
     public void onStartButtonPressed() {
-        driverControlled = new DifferentialArcadeDriverControlled(leftDriveMotor, rightDriveMotor, Gamepads.gamepad1().leftStickY(), Gamepads.gamepad1().rightStickX());
+        driverControlled = new DifferentialArcadeDriverControlled(leftDriveMotor, rightDriveMotor, Gamepads.gamepad1().leftStickY().negate(), Gamepads.gamepad1().rightStickX().negate());
         driverControlled.schedule();
 
         Flywheel.INSTANCE.spinUp.schedule();
