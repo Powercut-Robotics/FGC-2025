@@ -21,7 +21,7 @@ public class Intake implements Subsystem {
             .brakeMode();
 
     public Command stopIntake = new InstantCommand(() -> power = 0).requires(this);
-    public Command intake = new InstantCommand(() -> power = 0.5).requires(this);
+    public Command intake = new InstantCommand(() -> power = 1).requires(this);
 
     @Override
     public void periodic() {

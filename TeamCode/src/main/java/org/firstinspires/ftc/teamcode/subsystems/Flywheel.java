@@ -16,7 +16,7 @@ import dev.nextftc.hardware.powerable.SetPower;
 public class Flywheel implements Subsystem {
     public static final Flywheel INSTANCE = new Flywheel();
     private Flywheel() { }
-    private Telemetry telemetry = ActiveOpMode.telemetry();
+    private Telemetry telemetry;
     private boolean powered = false;
     private final ControlSystem flywheelControlSystem = ControlSystem.builder()
             .velPid(1)
@@ -28,16 +28,19 @@ public class Flywheel implements Subsystem {
 
     public Command spinUp = new ParallelGroup(
             new InstantCommand(() -> powered = true),
-            new RunToVelocity(flywheelControlSystem, 2200)
+            new RunToVelocity(flywheelControlSystem, 2500)
     ).requires(this);
     public Command cutPower = new InstantCommand(() -> powered = false).requires(this);
 
+    @Override
+    public void initialize() {
+        telemetry = ActiveOpMode.telemetry();
+    }
 
     @Override
     public void periodic() {
-        telemetry.addData("Flywheel Speed", flywheelMotor.getVelocity());
-
         if (powered) {
+            telemetry.addData("Flywheel Speed", flywheelMotor.getVelocity());
             flywheelMotor.setPower(flywheelControlSystem.calculate(flywheelMotor.getState()));
         } else {
             flywheelMotor.setPower(0);
