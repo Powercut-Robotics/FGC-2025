@@ -6,6 +6,8 @@ import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
+import dev.nextftc.hardware.impl.ServoEx;
+import dev.nextftc.hardware.positionable.SetPosition;
 
 public class Climber implements Subsystem {
     public static final Climber INSTANCE = new Climber();
@@ -16,10 +18,15 @@ public class Climber implements Subsystem {
     private final MotorEx climbMotor = new MotorEx("climber")
             .brakeMode();
 
+    private final ServoEx graspServo = new ServoEx("graspServo");
 
-    public Command holdPosition = new InstantCommand(() -> power = 0).requires(this);
-    public Command climbUp = new InstantCommand(() -> power = 1).requires(this);
-    public Command holdHang = new InstantCommand(() -> power = 0.2).requires(this);
+
+    public Command holdPosition = new InstantCommand(() -> power = 0).requires(climbMotor);
+    public Command climbUp = new InstantCommand(() -> power = 1).requires(climbMotor);
+    public Command holdHang = new InstantCommand(() -> power = 0.2).requires(climbMotor);
+
+    public Command graspRope = new SetPosition(graspServo, 1).requires(graspServo);
+    public Command releaseGrasp = new SetPosition(graspServo, 0.1).requires(graspServo);
 
     @Override
     public void initialize() {

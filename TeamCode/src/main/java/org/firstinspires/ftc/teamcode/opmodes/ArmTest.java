@@ -36,15 +36,17 @@ public class ArmTest extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         Gamepads.gamepad2().cross()
-                .whenBecomesTrue(Arms.INSTANCE.squeezeArm);
-
+                .whenBecomesTrue(Arms.INSTANCE.squeezeArm)
+                .whenBecomesTrue(Intake.INSTANCE.intake)
+                .whenBecomesFalse(Intake.INSTANCE.stopIntake);
         Gamepads.gamepad2().square()
                 .whenBecomesTrue(Arms.INSTANCE.openArm);
 
         Gamepads.gamepad2().circle()
-                .whenBecomesTrue(Arms.INSTANCE.holdArm)
-                .whenBecomesTrue(Intake.INSTANCE.intake)
-                .whenBecomesFalse(Intake.INSTANCE.stopIntake);
+                .whenBecomesTrue(Arms.INSTANCE.holdArm);
+
+
+
     }
 
     @Override

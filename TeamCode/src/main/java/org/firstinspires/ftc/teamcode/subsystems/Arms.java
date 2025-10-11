@@ -43,20 +43,20 @@ public class Arms implements Subsystem {
     ).requires(this);
     public Command openArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 200)
+            new RunToPosition(armControlSystem, 600)
     ).requires(this);
     public Command holdArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 400)
+            new RunToPosition(armControlSystem, 800)
     ).requires(this);
     public Command squeezeArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 500)
+            new RunToPosition(armControlSystem, 1000)
     ).requires(this);
     
     public Command resetArms = new SequentialGroup(
-            new InstantCommand(leftArm::zeroed),
-            new InstantCommand(rightArm::zeroed)
+            new InstantCommand(() -> leftArm.zero()),
+            new InstantCommand(() -> rightArm.zero())
     ).requires(this);
 
 
@@ -68,6 +68,7 @@ public class Arms implements Subsystem {
         //0 for folded back
         leftArm.zeroed();
         rightArm.zeroed();
+
     }
 
     @Override
@@ -83,10 +84,10 @@ public class Arms implements Subsystem {
                 leftPower = -armMaxPower;
             }
 
-            if (leftPower > armMaxPower) {
-                leftPower = armMaxPower;
-            } else if (leftPower < -armMaxPower) {
-                leftPower = -armMaxPower;
+            if (rightPower > armMaxPower) {
+                rightPower = armMaxPower;
+            } else if (rightPower < -armMaxPower) {
+                rightPower = -armMaxPower;
             }
 
             telemetry.addData("Left Arm Pos", leftArm.getCurrentPosition());
