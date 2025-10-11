@@ -23,12 +23,11 @@ public class Arms implements Subsystem {
 
     private final MotorEx leftArm = new MotorEx("leftArm")
             .zeroed()
-            .brakeMode()
-            .reversed();
+            .brakeMode();
     private final MotorEx rightArm = new MotorEx("rightArm")
             .zeroed()
-            .brakeMode();
-
+            .brakeMode()
+            .reversed();
 
  //   private final MotorGroup arms = new MotorGroup(leftArm, rightArm);
 
@@ -40,19 +39,19 @@ public class Arms implements Subsystem {
 
     public Command foldBack = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 100)
+            new RunToPosition(armControlSystem, 0)
     ).requires(this);
     public Command openArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 500)
+            new RunToPosition(armControlSystem, 200)
     ).requires(this);
     public Command holdArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 200)
+            new RunToPosition(armControlSystem, 400)
     ).requires(this);
     public Command squeezeArm = new SequentialGroup(
             new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 0)
+            new RunToPosition(armControlSystem, 500)
     ).requires(this);
     
     public Command resetArms = new SequentialGroup(
