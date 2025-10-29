@@ -1,25 +1,17 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
-import dev.nextftc.ftc.ActiveOpMode;
-import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
 public class Arms implements Subsystem {
     public static final Arms INSTANCE = new Arms();
     private Arms() { }
 
-    private double armMaxPower = 0.5;
-
-    private Telemetry telemetry;
-
-    private boolean activated = false;
+    private double armManualPowerSetting = 0.3;
+    private double leftArmManualPower = 0;
+    private double rightArmManualPower = 0;
 
     private final MotorEx leftArm = new MotorEx("leftArm")
             .zeroed()
@@ -29,76 +21,23 @@ public class Arms implements Subsystem {
             .brakeMode()
             .reversed();
 
- //   private final MotorGroup arms = new MotorGroup(leftArm, rightArm);
+    public Command leftArmsIn = new InstantCommand(() -> leftArmManualPower = armManualPowerSetting).requires(leftArm);
+    public Command leftArmsOut = new InstantCommand(() -> leftArmManualPower = -armManualPowerSetting).requires(leftArm);
+    public Command leftArmsHold = new InstantCommand(() -> leftArmManualPower = 0).requires(leftArm);
 
-    private final ControlSystem armControlSystem = ControlSystem.builder()
-            .posPid(0.005, 0, 0)
-            .build();
-
-
-
-    public Command foldBack = new SequentialGroup(
-            new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 0)
-    ).requires(this);
-    public Command openArm = new SequentialGroup(
-            new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 600)
-    ).requires(this);
-    public Command holdArm = new SequentialGroup(
-            new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 800)
-    ).requires(this);
-    public Command squeezeArm = new SequentialGroup(
-            new InstantCommand(() -> activated = true),
-            new RunToPosition(armControlSystem, 1000)
-    ).requires(this);
-    
-    public Command resetArms = new SequentialGroup(
-            new InstantCommand(() -> leftArm.zero()),
-            new InstantCommand(() -> rightArm.zero())
-    ).requires(this);
+    public Command rightArmsIn = new InstantCommand(() -> rightArmManualPower = armManualPowerSetting).requires(rightArm);
+    public Command rightArmsOut = new InstantCommand(() -> rightArmManualPower = -armManualPowerSetting).requires(rightArm);
+    public Command rightArmsHold = new InstantCommand(() -> rightArmManualPower = 0).requires(rightArm);
 
 
-
-    @Override
-    public void initialize() {
-            telemetry = ActiveOpMode.telemetry();
-
-        //0 for folded back
-        leftArm.zeroed();
-        rightArm.zeroed();
-
-    }
 
     @Override
     public void periodic() {
 
-        if (activated) {
-            double leftPower = armControlSystem.calculate(leftArm.getState());
-            double rightPower = armControlSystem.calculate(rightArm.getState());
+        double leftPower = leftArmManualPower;
+        double rightPower = rightArmManualPower;
 
-            if (leftPower > armMaxPower) {
-                leftPower = armMaxPower;
-            } else if (leftPower < -armMaxPower) {
-                leftPower = -armMaxPower;
-            }
-
-            if (rightPower > armMaxPower) {
-                rightPower = armMaxPower;
-            } else if (rightPower < -armMaxPower) {
-                rightPower = -armMaxPower;
-            }
-
-            telemetry.addData("Left Arm Pos", leftArm.getCurrentPosition());
-            telemetry.addData("Right Arm Pos", rightArm.getCurrentPosition());
-            telemetry.addData("Left Arm Power", leftPower);
-            telemetry.addData("Right Arm Power", rightPower);
-            leftArm.setPower(leftPower);
-            rightArm.setPower(rightPower);
-        } else {
-            leftArm.setPower(0);
-            rightArm.setPower(0);
-        }
+        leftArm.setPower(leftPower);
+        rightArm.setPower(rightPower);
     }
 }

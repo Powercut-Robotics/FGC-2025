@@ -17,20 +17,16 @@ public class Flywheel implements Subsystem {
     public static final Flywheel INSTANCE = new Flywheel();
     private Flywheel() { }
     private Telemetry telemetry;
-    private boolean powered = false;
-    private final ControlSystem flywheelControlSystem = ControlSystem.builder()
-            .velPid(1)
-            .build();
+
+    private double power = 0;
 
 
     private final MotorEx flywheelMotor = new MotorEx("flywheelMotor")
             .floatMode();
 
-    public Command spinUp = new ParallelGroup(
-            new InstantCommand(() -> powered = true),
-            new RunToVelocity(flywheelControlSystem, 2500)
-    ).requires(this);
-    public Command cutPower = new InstantCommand(() -> powered = false).requires(this);
+    public Command spinUp = new InstantCommand(() -> power = 0.8).requires(this);
+
+    public Command cutPower = new InstantCommand(() -> power = 0).requires(this);
 
     @Override
     public void initialize() {
@@ -39,12 +35,11 @@ public class Flywheel implements Subsystem {
 
     @Override
     public void periodic() {
-        if (powered) {
-            telemetry.addData("Flywheel Speed", flywheelMotor.getVelocity());
-            flywheelMotor.setPower(flywheelControlSystem.calculate(flywheelMotor.getState()));
-        } else {
-            flywheelMotor.setPower(0);
-        }
+            if (ActiveOpMode.isStarted()) {
+                telemetry.addData("Flywheel Speed", flywheelMotor.getVelocity());
+            }
+            flywheelMotor.setPower(power);
+
     }
 
 }
