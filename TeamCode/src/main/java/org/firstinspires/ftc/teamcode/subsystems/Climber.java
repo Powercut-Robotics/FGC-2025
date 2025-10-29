@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import java.time.Duration;
+
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.RunToPosition;
@@ -23,7 +27,12 @@ public class Climber implements Subsystem {
 
     public Command holdPosition = new InstantCommand(() -> power = 0).requires(climbMotor);
     public Command climbUp = new InstantCommand(() -> power = 1).requires(climbMotor);
-    public Command holdHang = new InstantCommand(() -> power = 0.2).requires(climbMotor);
+    public Command continueHang = new SequentialGroup(
+            new InstantCommand(() -> power = 1),
+            new Delay(5),
+            new InstantCommand(() -> power = 0)
+    ).requires(climbMotor);
+
 
     public Command graspRope = new SetPosition(graspServo, 1).requires(graspServo);
     public Command releaseGrasp = new SetPosition(graspServo, 0.1).requires(graspServo);

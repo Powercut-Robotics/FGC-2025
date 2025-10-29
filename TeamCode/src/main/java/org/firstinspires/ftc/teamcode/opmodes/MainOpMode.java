@@ -45,7 +45,7 @@ public class MainOpMode extends NextFTCOpMode {
         Climber.INSTANCE.holdPosition.schedule();
 
         Gamepads.gamepad1().rightBumper()
-                .whenBecomesTrue(() -> driverControlled.setScalar(0.2))
+                .whenBecomesTrue(() -> driverControlled.setScalar(0.3))
                 .whenBecomesFalse(() -> driverControlled.setScalar(1));
 
         Gamepads.gamepad1().leftTrigger().atLeast(0.2)
@@ -60,6 +60,9 @@ public class MainOpMode extends NextFTCOpMode {
         Gamepads.gamepad1().cross()
                 .whenBecomesTrue(Pusher.INSTANCE.pushUpBalls)
                 .whenBecomesFalse(Pusher.INSTANCE.holdBalls);
+
+        Gamepads.gamepad1().square()
+                .whenBecomesTrue(Climber.INSTANCE.continueHang);
 
         Gamepads.gamepad2().leftTrigger().atLeast(0.2)
                 .whenBecomesTrue(Arms.INSTANCE.leftArmsOut)
