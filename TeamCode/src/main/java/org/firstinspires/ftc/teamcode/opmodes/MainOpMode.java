@@ -48,9 +48,9 @@ public class MainOpMode extends NextFTCOpMode {
                 .whenBecomesTrue(() -> driverControlled.setScalar(0.3))
                 .whenBecomesFalse(() -> driverControlled.setScalar(1));
 
-        Gamepads.gamepad1().leftTrigger().atLeast(0.2)
-                .whenBecomesTrue(Climber.INSTANCE.graspRope)
-                .whenBecomesFalse(Climber.INSTANCE.releaseGrasp);
+        Gamepads.gamepad1().rightTrigger().atLeast(0.5)
+                .whenBecomesTrue(() -> driverControlled.setScalar(0.5))
+                .whenBecomesFalse(() -> driverControlled.setScalar(1));
 
         Gamepads.gamepad1().leftBumper()
                 .whenBecomesTrue(Climber.INSTANCE.climbUp)
@@ -61,8 +61,11 @@ public class MainOpMode extends NextFTCOpMode {
                 .whenBecomesTrue(Pusher.INSTANCE.pushUpBalls)
                 .whenBecomesFalse(Pusher.INSTANCE.holdBalls);
 
-        Gamepads.gamepad1().square()
-                .whenBecomesTrue(Climber.INSTANCE.continueHang);
+        Gamepads.gamepad2().square()
+                .whenBecomesTrue(Climber.INSTANCE.continueHangSixSec);
+
+        Gamepads.gamepad2().circle()
+                .whenBecomesTrue(Climber.INSTANCE.continueHangTenSec);
 
         Gamepads.gamepad2().leftTrigger().atLeast(0.2)
                 .whenBecomesTrue(Arms.INSTANCE.leftArmsOut)
