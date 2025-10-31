@@ -23,6 +23,8 @@ public class Intake implements Subsystem {
     public Command stopIntake = new InstantCommand(() -> power = 0).requires(this);
     public Command intake = new InstantCommand(() -> power = 1).requires(this);
 
+    public Command outtake = new InstantCommand(() -> power = -1).requires(this);
+
     @Override
     public void periodic() {
         intakeMotor.setPower(power);

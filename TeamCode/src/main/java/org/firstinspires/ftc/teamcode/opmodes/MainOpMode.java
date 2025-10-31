@@ -90,6 +90,14 @@ public class MainOpMode extends NextFTCOpMode {
         Gamepads.gamepad2().cross()
                 .whenBecomesTrue(Intake.INSTANCE.intake)
                 .whenBecomesFalse(Intake.INSTANCE.stopIntake);
+
+        Gamepads.gamepad2().dpadUp()
+                .whenBecomesTrue(Intake.INSTANCE.outtake)
+                .whenBecomesFalse(Intake.INSTANCE.stopIntake);
+
+        Gamepads.gamepad2().triangle()
+                .whenBecomesTrue(Intake.INSTANCE.outtake)
+                .whenBecomesFalse(Intake.INSTANCE.stopIntake);
     }
 
     @Override
